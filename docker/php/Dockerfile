@@ -34,4 +34,3 @@ USER www-data
 
 # Copy project files
 COPY --chown=www-data:www-data ./app /var/www/html/app
-COPY --chown=www-data:www-data ./task /var/www/html/app/var/tmp/task
