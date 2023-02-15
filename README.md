@@ -13,7 +13,7 @@ make start
 
 # Команда импорта
 ```shell
-docker-compose exec app sh -c "bin/console app:products:convert-file task/input.csv my-output.json"
+docker-compose exec app sh -c "bin/console app:products:convert-file input.csv my-output.json"
 ```
 
 Результат команды в файле [app/var/tmp/my-output.json](app/var/tmp/my-output.json)
