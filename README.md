@@ -71,11 +71,12 @@ make test
 class CsvParser implements ProductsParserInterface
 {
     use ProductsParserTrait;
+
     private DenormalizerInterface $denormalizer;
+    private LoggerInterface $logger;
 
     private array $headers = ["itemName", "type", "parent", "relation"];
     private string $delimiter = ';';
-    private LoggerInterface $logger;
 
 ```
 
