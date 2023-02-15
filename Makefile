@@ -3,3 +3,6 @@ build:
 
 start:
 	docker-compose up -d
+
+test:
+	docker-compose exec app sh -c "vendor/bin/phpunit"

@@ -9,37 +9,51 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class ProductConverterCommandTest extends WebTestCase
 {
+    private static string $assetDirectory;
+    private static string $tmpFileDirectory;
+
+    public static function setUpBeforeClass(): void
+    {
+        $kernel = self::bootKernel();
+        self::$assetDirectory = $kernel->getProjectDir() . '/tests/Assets/ProductFileConverter/';
+        self::$tmpFileDirectory = $kernel->getProjectDir() . '/var/tmp/';
+
+        copy(self::$assetDirectory . 'input.csv', self::$tmpFileDirectory . 'input.csv');
+        copy(self::$assetDirectory . 'input.csv', self::$tmpFileDirectory . 'input.xml');
+    }
+
     public function testCorrect(): void
     {
         $kernel = self::bootKernel();
         $application = new Application($kernel);
-        $fileDirectory = $kernel->getContainer()->getParameter('fileDirectory');
 
         $command = $application->find('app:product:convert-file');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             // pass arguments to the helper
-            'import-file' => 'task/input.csv',
+            'import-file' => 'input.csv',
             'export-file' => 'export-test.json',
         ]);
 
-        $commandTester->assertCommandIsSuccessful();
+        $commandTester->assertCommandIsSuccessful($commandTester->getDisplay());
 
-        $this->assertJsonFileEqualsJsonFile($fileDirectory . 'task/output.json', $fileDirectory . 'export-test.json');
+        $this->assertJsonFileEqualsJsonFile(self::$assetDirectory . 'output.json', self::$tmpFileDirectory . 'export-test.json');
     }
 
     public function testNotValidData(): void
     {
         $kernel = self::bootKernel();
         $application = new Application($kernel);
+        $fileDirectory = self::$tmpFileDirectory;
+        copy($fileDirectory . 'task/input.csv', $fileDirectory . 'task/input.xml');
 
         // File does not exist
         $command = $application->find('app:product:convert-file');
         $commandTester = new CommandTester($command);
         $result = $commandTester->execute([
             // pass arguments to the helper
-            'import-file' => 'task/input2.csv',
-            'export-file' => 'test/export-test.json',
+            'import-file' => 'input2.csv',
+            'export-file' => 'export-test.json',
         ]);
         $this->assertSame(Command::FAILURE, $result);
         $output = $commandTester->getDisplay();
@@ -48,8 +62,8 @@ final class ProductConverterCommandTest extends WebTestCase
         // Export file is not writable
         $result = $commandTester->execute([
             // pass arguments to the helper
-            'import-file' => 'task/input.xml',
-            'export-file' => 'test/export-test.json',
+            'import-file' => 'input.xml',
+            'export-file' => 'testDirectory/export-test.json',
         ]);
         $this->assertSame(Command::FAILURE, $result);
         $output = $commandTester->getDisplay();
@@ -58,7 +72,7 @@ final class ProductConverterCommandTest extends WebTestCase
         // Incorrect format
         $result = $commandTester->execute([
             // pass arguments to the helper
-            'import-file' => 'task/input.xml',
+            'import-file' => 'input.xml',
             'export-file' => 'export-test.json',
         ]);
         $this->assertSame(Command::FAILURE, $result);

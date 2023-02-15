@@ -2,10 +2,23 @@
 [Читать](task/readme.txt)
 
 # Сборка проекта
+```shell
 make build
+```
 
 # Запуск проекта
+```shell
 make start
+```
 
 # Команда импорта
-docker-compose exec app sh -c "bin/console app:products:convert-file input.csv output.json"
+```shell
+docker-compose exec app sh -c "bin/console app:products:convert-file task/input.csv my-output.json"
+```
+
+Результат команды в файле [app/var/tmp/my-output.json](app/var/tmp/my-output.json)
+
+# Автотесты
+```shell
+make test
+```

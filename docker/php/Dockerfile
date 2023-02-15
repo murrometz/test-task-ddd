@@ -2,8 +2,8 @@ FROM php:8.1-fpm-alpine
 
 ENV COMPOSER_VERSION=2.5.3
 
-COPY ./app /ver/www/html/app
-COPY ./task /ver/www/html/app/var/tmp/task
+COPY ./app /var/www/html/app
+COPY ./task /var/www/html/app/var/tmp/task
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --version=$COMPOSER_VERSION --install-dir=/usr/local/bin --filename=composer

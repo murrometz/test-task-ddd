@@ -19,7 +19,6 @@ services:
             dockerfile: docker/php/Dockerfile
         volumes:
             - ./app:/var/www/html/app/:rw
-            - ./task:/var/www/html/app/var/tmp/task/:rw
         container_name: task-ddd-app
         env_file:
             - ./app/.env
