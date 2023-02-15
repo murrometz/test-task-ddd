@@ -7,4 +7,4 @@ start:
 	docker-compose up -d
 
 test:
-	docker-compose exec app sh -c "php -d vendor/bin/phpunit"
+	docker-compose exec app sh -c "php vendor/bin/phpunit"
