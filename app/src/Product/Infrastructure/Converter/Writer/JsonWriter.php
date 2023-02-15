@@ -21,7 +21,7 @@ class JsonWriter implements ProductsWriterInterface
         $this->serializer = $serializer;
     }
 
-    public function write(RowCollection $data, string $path): void //TODO
+    public function write(RowCollection $data, string $path): void
     {
         $data = $this->serializer->serialize($data, 'json', [
             'json_encode_options' => JSON_UNESCAPED_UNICODE
