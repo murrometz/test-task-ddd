@@ -17,7 +17,9 @@ final class ProductConverterCommandTest extends WebTestCase
         $kernel = self::bootKernel();
         self::$assetDirectory = $kernel->getProjectDir() . '/tests/Assets/ProductFileConverter/';
         self::$tmpFileDirectory = $kernel->getProjectDir() . '/var/tmp/';
-        mkdir(self::$tmpFileDirectory);
+        if (!is_dir(self::$tmpFileDirectory)) {
+            mkdir(self::$tmpFileDirectory);
+        }
 
         copy(self::$assetDirectory . 'input.csv', self::$tmpFileDirectory . 'input.csv');
         copy(self::$assetDirectory . 'input.csv', self::$tmpFileDirectory . 'input.xml');
