@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Product\Domain\FileConverter\Command;
 
 use App\Product\Domain\FileConverter\ProductsParserInterfaceCollection;
-use App\Product\Domain\FileConverter\ProductsProcessorInterface;
 use App\Product\Domain\FileConverter\ProductsWriterInterfaceCollection;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -37,6 +36,7 @@ class ProductConvertCommandHandler
         if (!$this->readers->supports($importFileExtension)) {
             $result->add(new ConstraintViolation('Допустимые форматы входных файлов: ' . implode(', ', $this->readers->getAllowedFormats()), null, [], null, null, null));
         }
+
         if (!$this->writers->supports($exportFileExtension)) {
             $result->add(new ConstraintViolation('Допустимые форматы результата: ' . implode(', ', $this->writers->getAllowedFormats()), null, [], null, null, null));
         }
@@ -46,17 +46,8 @@ class ProductConvertCommandHandler
 
     public function convert(ProductConvertCommand $command): bool
     {
-        $fileExtension = pathinfo($command->getImportFile(), PATHINFO_EXTENSION);
-        $result = new ConstraintViolationList();
-        if (!$this->readers->supports($fileExtension)) {
-            $result->add(new ConstraintViolation('Допустимые форматы входных файлов: ' . implode(', ', $this->readers->getAllowedFormats()), null, [], null, null, null));
-        }
-        if (!$this->writers->supports($command->getExportFile())) {
-            $result->add(new ConstraintViolation('Допустимые форматы результата: ' . implode(', ', $this->writers->getAllowedFormats()), null, [], null, null, null));
-        }
-
         $data = $this->readers->parse($command->getImportFile());
-        $result = $this->writers->write($data, $command->getExportFile());
+        $this->writers->write($data, $command->getExportFile());
 
         return true;
     }
