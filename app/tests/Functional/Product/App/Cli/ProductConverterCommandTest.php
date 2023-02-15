@@ -17,6 +17,7 @@ final class ProductConverterCommandTest extends WebTestCase
         $kernel = self::bootKernel();
         self::$assetDirectory = $kernel->getProjectDir() . '/tests/Assets/ProductFileConverter/';
         self::$tmpFileDirectory = $kernel->getProjectDir() . '/var/tmp/';
+        mkdir(self::$tmpFileDirectory);
 
         copy(self::$assetDirectory . 'input.csv', self::$tmpFileDirectory . 'input.csv');
         copy(self::$assetDirectory . 'input.csv', self::$tmpFileDirectory . 'input.xml');
@@ -45,7 +46,7 @@ final class ProductConverterCommandTest extends WebTestCase
         $kernel = self::bootKernel();
         $application = new Application($kernel);
         $fileDirectory = self::$tmpFileDirectory;
-        copy($fileDirectory . 'task/input.csv', $fileDirectory . 'task/input.xml');
+        copy($fileDirectory . 'input.csv', $fileDirectory . 'input.xml');
 
         // File does not exist
         $command = $application->find('app:product:convert-file');
