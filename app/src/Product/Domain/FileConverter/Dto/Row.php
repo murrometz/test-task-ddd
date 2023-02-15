@@ -2,8 +2,6 @@
 
 namespace App\Product\Domain\FileConverter\Dto;
 
-use App\Product\Domain\FileConverter\Dto\Collection\RowCollection;
-
 class Row
 {
     private string $itemName;

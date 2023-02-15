@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Product\Domain\FileConverter;
+namespace App\Product\Domain\FileConverter\Writer;
 
-use App\Core\Collection\CollectionAbstract;
-use App\Product\Domain\FileConverter\Dto\Collection\RowCollection;
+use App\Core\Collection\AbstractCollection;
+use App\Product\Domain\FileConverter\Dto\RowCollection;
 use App\Product\Domain\FileConverter\Exception\NoSupportedWriterException;
 
-class ProductsWriterInterfaceCollection extends CollectionAbstract
+class ProductsWriterInterfaceCollection extends AbstractCollection
 {
     public function __construct(ProductsWriterInterface ...$dtoList)
     {

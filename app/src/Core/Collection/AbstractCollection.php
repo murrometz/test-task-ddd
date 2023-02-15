@@ -7,7 +7,7 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 
-abstract class CollectionAbstract implements IteratorAggregate, ArrayAccess, Countable
+abstract class AbstractCollection implements IteratorAggregate, ArrayAccess, Countable
 {
     protected array $items;
 

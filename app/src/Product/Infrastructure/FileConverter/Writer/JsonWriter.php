@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Product\Infrastructure\Converter\Writer;
+namespace App\Product\Infrastructure\FileConverter\Writer;
 
-use App\Product\Domain\FileConverter\Dto\Collection\RowCollection;
-use App\Product\Domain\FileConverter\ProductsWriterInterface;
-use App\Product\Infrastructure\Converter\ProductsWriterTrait;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use App\Product\Domain\FileConverter\Dto\RowCollection;
+use App\Product\Domain\FileConverter\Writer\ProductsWriterInterface;
+use App\Product\Infrastructure\FileConverter\ProductsWriterTrait;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class JsonWriter implements ProductsWriterInterface
 {
     use ProductsWriterTrait;
+
     private SerializerInterface $serializer;
 
     public function __construct(SerializerInterface $serializer)

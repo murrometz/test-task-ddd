@@ -2,6 +2,7 @@
 
 namespace App\Product\App\Cli;
 
+use App\Infrastructure\Validator\Exception\ValidationException;
 use App\Product\Domain\FileConverter\Command\ProductConvertCommand;
 use App\Product\Domain\FileConverter\Command\ProductConvertCommandHandler;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -25,29 +26,20 @@ class ProductConverterCommand extends Command
         $importFilePath = $this->fileDirectory . $input->getArgument('import-file');
         $exportFilePath = $this->fileDirectory . $input->getArgument('export-file');
 
-        if (!file_exists($importFilePath)) {
-            $output->writeln('Файл импорта отсутствует');
-            return Command::FAILURE;
-        }
-
-        @touch($exportFilePath);
-        if (!is_writable($exportFilePath)) {
-            $output->writeln('Невозможно записать в файл для экспорта');
-            return Command::FAILURE;
-        }
-
         $command = new ProductConvertCommand($importFilePath, $exportFilePath);
 
-        $violations = $this->handler->validate($command);
-        if ($violations->count()) {
+        try {
+            $this->handler->convert($command);
+        } catch (ValidationException $exception) {
             $output->writeln('Файлы не прошли проверку');
-            foreach ($violations as $violation) {
+
+            foreach ($exception->getViolations() as $violation) {
                 $output->writeln($violation->getMessage());
             }
+
             return Command::FAILURE;
         }
 
-        $this->handler->convert($command);
 
         return Command::SUCCESS;
     }

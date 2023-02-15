@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Product\Domain\FileConverter;
+namespace App\Product\Domain\FileConverter\Parser;
 
-use App\Product\Domain\FileConverter\Dto\Collection\RowCollection;
+use App\Product\Domain\FileConverter\Dto\RowCollection;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag('app.product.parser')]

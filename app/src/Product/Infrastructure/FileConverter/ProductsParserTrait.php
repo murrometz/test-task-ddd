@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Product\Infrastructure\Converter;
+namespace App\Product\Infrastructure\FileConverter;
 
-trait ProductsWriterTrait
+trait ProductsParserTrait
 {
     public function supports(string $format): bool
     {
