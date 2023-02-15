@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Product\Domain\FileConverter\Command;
 
 use App\Product\Domain\FileConverter\ProductsParserInterfaceCollection;
+use App\Product\Domain\FileConverter\ProductsProcessorInterface;
 use App\Product\Domain\FileConverter\ProductsWriterInterfaceCollection;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -17,11 +18,12 @@ class ProductConvertCommandHandler
 
     public function __construct(
         iterable $readers,
-        iterable $writers
+        iterable $writers,
     )
     {
         $readers = $readers instanceof \Traversable ? iterator_to_array($readers) : $readers;
         $this->readers = new ProductsParserInterfaceCollection(...$readers);
+
         $writers = $writers instanceof \Traversable ? iterator_to_array($writers) : $writers;
         $this->writers = new ProductsWriterInterfaceCollection(...$writers);
     }
@@ -42,7 +44,7 @@ class ProductConvertCommandHandler
         return $result;
     }
 
-    public function convert(ProductConvertCommand $command): ConstraintViolationListInterface
+    public function convert(ProductConvertCommand $command): bool
     {
         $fileExtension = pathinfo($command->getImportFile(), PATHINFO_EXTENSION);
         $result = new ConstraintViolationList();
@@ -53,6 +55,9 @@ class ProductConvertCommandHandler
             $result->add(new ConstraintViolation('Допустимые форматы результата: ' . implode(', ', $this->writers->getAllowedFormats()), null, [], null, null, null));
         }
 
-        return $result;
+        $data = $this->readers->parse($command->getImportFile());
+        $result = $this->writers->write($data, $command->getExportFile());
+
+        return true;
     }
 }

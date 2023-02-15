@@ -45,7 +45,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters()
-        ->set('fileDirectory', '%kernel.project_dir%/var/tmp')
+        ->set('fileDirectory', '%kernel.project_dir%/var/tmp/')
     ;
 
     $services = $containerConfigurator->services();
@@ -61,15 +61,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             __DIR__ . '../src/Tests/',
             __DIR__ . '../src/Entity/',
             __DIR__ . '../src/Kernel.php',
+            __DIR__ . '../src/**/Exception.php',
         ])
-    ;
-
-    $services->instanceof(ProductsParserInterface::class)
-        ->tag('app.product.parser')
-    ;
-
-    $services->instanceof(ProductsWriterInterface::class)
-        ->tag('app.product.writer')
     ;
 
     $services->get(ProductConvertCommandHandler::class)
@@ -77,4 +70,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             Configurator\tagged_iterator('app.product.parser'),
             Configurator\tagged_iterator('app.product.writer'),
         ]);
+
 };

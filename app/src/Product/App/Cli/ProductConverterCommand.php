@@ -24,15 +24,15 @@ class ProductConverterCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $importFilePath = $input->getArgument('import-file');
-        $exportFilePath = $input->getArgument('export-file');
+        $importFilePath = $this->fileDirectory . $input->getArgument('import-file');
+        $exportFilePath = $this->fileDirectory . $input->getArgument('export-file');
 
-        if (!file_exists($this->fileDirectory . $importFilePath)) {
-            $output->writeln('Import file does not exist');
+        if (!file_exists($importFilePath)) {
+            $output->writeln('Файл импорта отсутствует');
             return Command::FAILURE;
         }
-        if (touch($this->fileDirectory . $exportFilePath) === FALSE) {
-            $output->writeln('Export file is not writable');
+        if (!is_writable($exportFilePath)) {
+            $output->writeln('Невозможно записать в файл для экспорта');
             return Command::FAILURE;
         }
 
