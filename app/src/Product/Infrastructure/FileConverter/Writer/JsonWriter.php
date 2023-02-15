@@ -13,11 +13,9 @@ class JsonWriter implements ProductsWriterInterface
 {
     use ProductsWriterTrait;
 
-    private SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(private readonly SerializerInterface $serializer)
     {
-        $this->serializer = $serializer;
+
     }
 
     public function write(RowCollection $data, string $path): void

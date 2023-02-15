@@ -88,7 +88,7 @@ class CsvParser implements ProductsParserInterface
         return $record;
     }
 
-    private function processParentField(Row $record, array &$result, array &$repository)
+    private function processParentField(Row $record, array &$result, array &$repository): void
     {
         if ($record->getParent() === '') {
             $result[] = $record;
@@ -100,7 +100,8 @@ class CsvParser implements ProductsParserInterface
             }
         }
     }
-    private function processRelationField(Row $record, array &$result, array &$repository)
+
+    private function processRelationField(Row $record, array &$result, array &$repository): void
     {
         if ($record->getRelation() !== '') {
             if (!isset($repository[$record->getRelation()])) {

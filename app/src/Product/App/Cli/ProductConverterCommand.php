@@ -31,7 +31,9 @@ class ProductConverterCommand extends Command
         try {
             $this->handler->convert($command);
         } catch (ValidationException $exception) {
-            $output->writeln('Файлы не прошли проверку');
+            $output->writeln('Файлы не прошли проверку:');
+            $output->writeln('');
+            $output->writeln('Ошибки:');
 
             foreach ($exception->getViolations() as $violation) {
                 $output->writeln($violation->getMessage());
@@ -39,6 +41,9 @@ class ProductConverterCommand extends Command
 
             return Command::FAILURE;
         }
+
+
+        $output->writeln(PHP_EOL . "Success" . PHP_EOL);
 
 
         return Command::SUCCESS;

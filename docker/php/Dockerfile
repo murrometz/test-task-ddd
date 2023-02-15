@@ -33,4 +33,5 @@ COPY /docker/php/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 USER www-data
 
 # Copy project files
-COPY --chown=www-data:www-data ./app /var/www/html/app
+COPY ./app .
+
