@@ -5,7 +5,7 @@
 make build
 
 # Запуск проекта
-make up
+make start
 
 # Команда импорта
 docker-compose exec app sh -c "bin/console app:products:convert-file input.csv output.json"

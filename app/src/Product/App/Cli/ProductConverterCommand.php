@@ -31,6 +31,8 @@ class ProductConverterCommand extends Command
             $output->writeln('Файл импорта отсутствует');
             return Command::FAILURE;
         }
+
+        @touch($exportFilePath);
         if (!is_writable($exportFilePath)) {
             $output->writeln('Невозможно записать в файл для экспорта');
             return Command::FAILURE;
